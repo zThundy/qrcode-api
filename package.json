@@ -1,12 +1,12 @@
 {
   "name": "qr-scanner",
   "version": "1.0.0",
-  "description": "",
+  "description": "A custom nodejs application that can create qrcodes using post requests",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "zThundy__",
   "license": "ISC",
   "dependencies": {
     "ejs": "^3.1.6",
