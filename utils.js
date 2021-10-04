@@ -34,4 +34,4 @@ const checkAuthType = (header) => {
     return false;
 }
 
-module.exports = { makeID, print, checkAuthType }
+module.exports = { makeID, checkAuthType }
