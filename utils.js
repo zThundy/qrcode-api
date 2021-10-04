@@ -34,4 +34,16 @@ const checkAuthType = (header) => {
     return false;
 }
 
-module.exports = { makeID, checkAuthType }
+const timeouts = []
+const isInTimeout = (ip) => {
+    ip = ip.split(":")
+    ip = ip[3]
+    if (!timeouts.includes(ip)) {
+        timeouts.push(ip)
+        setTimeout(() => { const index = timeouts.indexOf(ip); timeouts.splice(index, 1); }, 2000)
+        return false
+    }
+    return true
+}
+
+module.exports = { makeID, isInTimeout, checkAuthType }
