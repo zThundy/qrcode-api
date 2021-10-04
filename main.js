@@ -8,6 +8,18 @@ const ID_LENGHT = 25;
 app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
 
+app.get("*", (req, res) => {
+    if (!isInTimeout(req.headers['x-forwarded-for'] || req.connection.remoteAddress)) {
+        QRCode.toDataURL(makeID(ID_LENGHT), { quality: 1.0 }, (err, url) => {
+            if (err) console.err(err);
+            res.render('qrcode', { qrurl: url, error: false });
+        })
+    } else {
+        res.render('qrcode', { qrurl: "", error: "You are making too many requests" });
+        res.end();
+    }
+})
+
 app.post("*", (req, res) => {
     if (checkAuthType(req.headers)) {
         if (!isInTimeout(req.headers['x-forwarded-for'] || req.connection.remoteAddress)) {

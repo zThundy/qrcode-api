@@ -10,7 +10,11 @@
 </head>
 
 <body>
-    <img src="<%= qrurl %>" />
+    <% if (error) { %>
+        <div><%= error %></div>
+    <% } else { %>
+        <img src="<%= qrurl %>" />
+    <% } %>
 </body>
 
 </html>
