@@ -1,4 +1,5 @@
 const tokens = require("./authorized.json")
+const QRCode = require('qrcode');
 
 // i mean... preatty self explainatory :P
 const makeID = (length) => {
@@ -50,4 +51,13 @@ const isInTimeout = (ip) => {
     return true
 }
 
-module.exports = { makeID, isInTimeout, checkAuthType }
+const generateQR = async (value) => {
+    try {
+        return await QRCode.toDataURL(value && value.length > 0 && isNaN(value) ? value : makeID(value || 25), { quality: 1.0 })
+    } catch(e) {
+        console.log(e)
+    }
+    
+}
+
+module.exports = { generateQR, isInTimeout, checkAuthType, makeID }
