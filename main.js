@@ -1,10 +1,21 @@
 const app = require("express")();
-const { makeID, isInTimeout, checkAuthType, generateQR } = require("./utils.js")
+const { makeID, isInTimeout, checkAuthType, generateQR } = require("./utils.js");
+const fs = require("fs")
 
-const PORT = 80;
+const credentials = {
+    // key: fs.readFileSync('/etc/letsencrypt/archive/phoneauth.it/privkey1.pem'),
+    // cert: fs.readFileSync('/etc/letsencrypt/archive/phoneauth.it/cert1.pem')
+}
+const https = require("https").createServer(credentials, app);
+const HTTP_PORT = 80;
+const HTTPS_PORT = 443;
 
 app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
+
+// app.get("*", async (req, res) => {
+//     res.redirect('https://' + req.headers.host + req.url);
+// })
 
 app.get("/", async (req, res) => {
     if (!isInTimeout(req.headers['x-forwarded-for'] || req.connection.remoteAddress)) {
@@ -47,7 +58,12 @@ app.post("*", async (req, res) => {
     }
 })
 
-app.listen(PORT, (err) => {
+app.listen(HTTP_PORT, (err) => {
     if (err) console.err(err);
-    console.log(`[APP] Listening on port ${PORT}`)
+    console.log(`[APP] Http server listening on port ${HTTP_PORT}`)
+})
+
+https.listen(HTTPS_PORT, (err) => {
+    if (err) console.err(err);
+    console.log(`[APP] Https server listening on port ${HTTPS_PORT}`)
 })
